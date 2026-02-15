@@ -6,11 +6,13 @@ from datetime import datetime
 from sqlalchemy import func
 from sqlalchemy.orm import relationship
 import json
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///expenses.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///expenses.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///instance/expenses.db')
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
