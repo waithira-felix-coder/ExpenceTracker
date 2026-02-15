@@ -1,0 +1,22 @@
+<div class="card mx-auto" style="max-width:720px">
+    <div class="card-body">
+        <h3 class="card-title mb-3">Categories</h3>
+        <form method="POST" class="row g-2 align-items-end">
+            <div class="col-sm-9">
+                <label class="form-label">New Category</label>
+                <input name="name" placeholder="New Category" class="form-control">
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-primary w-100">Add Category</button>
+            </div>
+        </form>
+
+        <hr>
+
+        <div class="list-group">
+            {% for cat in categories %}
+                <div class="list-group-item">{{ cat.name }}</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

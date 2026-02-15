@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="card-title">Recent Expenses</h3>
+            <a href="/add" class="btn btn-primary">Add Expense</a>
+        </div>
+
+        <h5 class="mb-3">Total: Ksh {{ total }}</h5>
+
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Subcategory</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.amount }}</td>
+                        <td>{{ expense.description }}</td>
+                        <td>{{ expense.category.name if expense.category else '' }}</td>
+                        <td>{{ expense.subcategory.name if expense.subcategory else '' }}</td>
+                        <td>{{ expense.date.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            <a href="/edit/{{ expense.id }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="/delete/{{ expense.id }}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

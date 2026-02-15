@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card mx-auto" style="max-width:720px">
+    <div class="card-body">
+        <h3 class="card-title mb-3">Edit Expense</h3>
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Amount</label>
+                <input type="number" step="0.01" name="amount" class="form-control" value="{{ expense.amount }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <input type="text" name="description" class="form-control" value="{{ expense.description }}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Date</label>
+                <input type="date" name="date" class="form-control" value="{{ expense.date.strftime('%Y-%m-%d') }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select name="category" id="categorySelect" class="form-select">
+                    <option value="">Choose category</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if expense.category_id==cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Subcategory (optional)</label>
+                <select name="subcategory" id="subcategorySelect" class="form-select">
+                    <option value="">-- optional subcategory --</option>
+                    {% for sub in subcategories %}
+                        <option data-cat="{{ sub.category_id }}" value="{{ sub.id }}" {% if expense.subcategory_id==sub.id %}selected{% endif %}>{{ sub.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('categorySelect').addEventListener('change', function(e){
+    const cat = e.target.value;
+    Array.from(document.getElementById('subcategorySelect').options).forEach(opt => {
+        if(!opt.dataset.cat) return;
+        opt.style.display = (opt.dataset.cat === cat) ? '' : 'none';
+    });
+});
+// trigger change to filter on load
+document.getElementById('categorySelect').dispatchEvent(new Event('change'));
+</script>
+
+{% endblock %}

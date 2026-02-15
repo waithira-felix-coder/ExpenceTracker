@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        {% for alert in alerts %}
+            <div class="alert alert-danger">{{ alert }}</div>
+        {% endfor %}
+
+        <h3 class="card-title mb-3">Dashboard</h3>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-subtitle mb-2">By Category</h5>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-subtitle mb-2">Monthly Trend</h5>
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const categoryCtx = document.getElementById('categoryChart');
+    new Chart(categoryCtx, {
+        type: 'pie',
+        data: {
+            labels: {{ category_labels|safe }},
+            datasets: [{ data: {{ category_totals|safe }} }]
+        }
+    });
+
+    const monthlyCtx = document.getElementById('monthlyChart');
+    new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ month_labels|safe }},
+            datasets: [{ label: 'Monthly Spending', data: {{ month_totals|safe }} }]
+        }
+    });
+</script>
+
+{% endblock %}

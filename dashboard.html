@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% for alert in alerts %}
+    <div class="alert alert-danger">
+        {{ alert }}
+    </div>
+{% endfor %}
+
+<h3> Dashboard</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="categoryChart"></canvas>
+    </div>
+
+    <div class="col-md-6">
+        <canvas id="monthlyChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const categoryCtx = document.getElementById('categoryChart');
+    new Chart(categoryCtx, {
+        type: 'pie',
+        data: {
+            labels: {{ category_labels|safe }},
+            datasets: [{
+                data: {{ category_totals|safe }}
+            }]
+        }
+    });
+
+    const monthlyCtx = document.getElementById('monthlyChart');
+    new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ month_labels|safe }},
+            datasets: [{
+                label: 'Monthly Spending',
+                data: {{ month_totals|safe }}
+            }]
+        }
+    });
+</script>
+
+{% endblock %}
